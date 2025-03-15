@@ -1,0 +1,54 @@
+[project]
+name = "readit-backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiobotocore>=2.21.1",
+    "aiogram>=3.18.0",
+    "aiogram-dialog>=2.3.1",
+    "aiosqlite",
+    "asyncpg>=0.30.0",
+    "fastapi>=0.115.11",
+    "greenlet>=3.1.1",
+    "itsdangerous>=2.2.0",
+    "pyjwt>=2.10.1",
+    "pytz>=2025.1",
+    "sqladmin>=0.20.1",
+    "sqlalchemy>=2.0.39",
+    "types-aiobotocore-s3>=2.21.1",
+    "uvicorn>=0.34.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.2.2",
+    "pytest-cov>=6.0.0",
+    "python-dotenv>=1.0.1",
+    "ruff>=0.11.0",
+    "tavern>=2.14.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "--tavern-global-cfg=tests/e2e/config.yml --log-cli-level=INFO --cov-report=html:tests/coverage --cov=./app ."
+
+[tool.ruff]
+line-length = 100
+exclude = [".git", "__pycache__", "env", "venv", ".venv", "__init__.py"]
+
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "C90" # mccabe for complexity
+]
+
+ignore = ["E402", "UP008", 'B008', 'C408']
+
+[tool.ruff.lint.mccabe]
+max-complexity = 8

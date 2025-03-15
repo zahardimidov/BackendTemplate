@@ -1,0 +1,12 @@
+test_name: Базовая проверка работоспособности
+
+marks:
+  - e2e
+
+stages:
+  - name: "Проверить PING"
+    request:
+      url: "{BASE_URL}/ping"
+      method: GET
+    response:
+      status_code: 200

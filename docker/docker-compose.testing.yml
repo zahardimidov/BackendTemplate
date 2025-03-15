@@ -1,0 +1,26 @@
+networks:
+  tests:
+
+services:
+  app:
+    extends:
+      file: ./docker-compose.base.yml
+      service: app
+    networks:
+      - tests
+  
+  postgres:
+    extends:
+      file: ./docker-compose.base.yml
+      service: postgres
+    networks:
+      - tests
+    
+  minio:
+    extends:
+      file: ./docker-compose.base.yml
+      service: minio
+    networks:
+      - tests
+
+  

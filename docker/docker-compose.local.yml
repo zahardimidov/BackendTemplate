@@ -1,0 +1,32 @@
+networks:
+  local:
+
+services:
+  tunnel:
+    image: yuccastream/tuna
+    command: http app:8080 --subdomain=${DOMAIN}
+    networks:
+      - local
+
+  app:
+    extends:
+      file: ./docker-compose.base.yml
+      service: app
+    networks:
+      - local
+  
+  postgres:
+    extends:
+      file: ./docker-compose.base.yml
+      service: postgres
+    networks:
+      - local
+
+  minio:
+    extends:
+      file: ./docker-compose.base.yml
+      service: minio
+    networks:
+      - local
+
+  

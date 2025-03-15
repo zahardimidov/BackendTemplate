@@ -1,0 +1,44 @@
+services:
+  app:
+    restart: unless-stopped
+    build:
+      context: ../
+      dockerfile: app/Dockerfile  
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - minio
+    environment:
+      - ENGINE=postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - MINIO_URL=http://minio:9000
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - WEBHOOK_HOST=${WEBHOOK_HOST}
+      - BOT_TOKEN=${BOT_TOKEN}
+
+  postgres:
+    image: postgres:16.6-alpine
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGPORT=5432
+      - POSTGRESQL_CONF="transaction_isolation='serializable'"
+
+  minio:
+    image: minio/minio
+    restart: unless-stopped
+    volumes:
+      - ./storage:/storage
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    command: server /storage --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
