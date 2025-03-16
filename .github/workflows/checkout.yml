@@ -1,0 +1,30 @@
+
+name: Run tests on any Push event
+on:
+  push:
+    branches:
+      - main
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+
+      - name: Cache Python packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements/dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install requirements
+        run: pip install -r requirements/dev.txt
+      - name: Ruff linter check
+        run: ruff check
+      - name: Run unit tests
+        run: python -m unittest discover tests/unit

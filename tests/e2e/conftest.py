@@ -26,7 +26,7 @@ docker_cmd = f'docker compose -f {docker_compose_file} --env-file={env_file}'
 
 load_dotenv(env_file, override=True)
 
-from app.run import app
+from app.main import app
 
 logging.info(app.title)
 

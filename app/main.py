@@ -1,12 +1,6 @@
-import os
-import sys
-
-from fastapi.responses import RedirectResponse
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 from app.api import router
 from app.bot import process_update, run_bot_webhook
@@ -42,7 +36,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080, forwarded_allow_ips='*')
