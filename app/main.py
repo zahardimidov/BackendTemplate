@@ -3,15 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
 from app.api import router
-from app.bot import process_update, run_bot_webhook
-from app.config import WEBHOOK_PATH
+from app.bot import init_bot
 from app.infra.admin import Admin
 from app.infra.database.session import engine, run_database
 
 
-async def on_startup(_):
+async def on_startup(app: FastAPI):
+    await init_bot(app)
     await run_database()
-    await run_bot_webhook()
     yield
 
 
@@ -24,7 +23,6 @@ app.include_router(router)
 admin = Admin(base_url="/api/admin")
 admin.init(app, engine)
 
-app.add_api_route(WEBHOOK_PATH, endpoint=process_update, methods=['post'])
 app.add_api_route('/', endpoint=redirect_to_docs, methods=['get'], include_in_schema=False)
 app.include_router(router)
 app.add_middleware(

@@ -1,33 +1,18 @@
-from aiogram import Dispatcher
-from aiogram.types import Update
-from fastapi import Request
+from fastapi import FastAPI
 
-from app.bot.dialogs import setup_dialogs
-from app.bot.middlewares import RegisterUserMiddleware
-from app.bot.settings import bot
-from app.config import WEBHOOK_URL
+from app.config import WEBHOOK_URL, WEBHOOK_PATH, BOT_TOKEN
+from app.logging import logger
 
+async def init_bot(app: FastAPI):
+    if not BOT_TOKEN:
+        return logger.info(f'Bot was not initialized: Token was not provided')
+    
+    from app.bot.settings import bot
+    from app.bot.dialogs import setup_dialogs
+    from app.bot.middlewares import RegisterUserMiddleware
+    
+    bot.dispatcher.message.middleware(RegisterUserMiddleware())
+    setup_dialogs(bot.dispatcher)
 
-async def run_bot_webhook():
-    me = await bot.get_me()
-    print(me.username)
-
-    await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True, allowed_updates=["message", "edited_channel_post", "callback_query"])
-
-
-async def run_bot_polling():
-    me = await bot.get_me()
-    print(me.username)
-
-    await bot.delete_webhook(True)
-    await dp.start_polling(bot)
-
-dp = Dispatcher()
-dp.message.middleware(RegisterUserMiddleware())
-
-setup_dialogs(dp)
-
-
-async def process_update(request: Request):
-    update = Update.model_validate(await request.json(), context={"bot": bot})
-    await dp.feed_update(bot, update)
+    app.add_api_route(WEBHOOK_PATH, endpoint=bot.process_update, methods=['post'])
+    await bot.run_webhook(WEBHOOK_URL)

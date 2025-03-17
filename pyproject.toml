@@ -37,6 +37,7 @@ addopts = "--tavern-global-cfg=tests/e2e/config.yml --log-cli-level=INFO --cov-r
 line-length = 100
 exclude = [".git", "__pycache__", "env", "venv", ".venv", "__init__.py"]
 
+[tool.ruff.lint]
 select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
