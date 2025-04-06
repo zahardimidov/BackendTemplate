@@ -208,6 +208,67 @@ wheels = [
 ]
 
 [[package]]
+name = "backend-template"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "aiobotocore" },
+    { name = "aiogram" },
+    { name = "aiogram-dialog" },
+    { name = "aiosqlite" },
+    { name = "asyncpg" },
+    { name = "fastapi" },
+    { name = "greenlet" },
+    { name = "itsdangerous" },
+    { name = "pyjwt" },
+    { name = "pytz" },
+    { name = "sqladmin" },
+    { name = "sqlalchemy" },
+    { name = "types-aiobotocore-s3" },
+    { name = "uvicorn" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+    { name = "pytest-env" },
+    { name = "python-dotenv" },
+    { name = "ruff" },
+    { name = "tavern" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "aiobotocore", specifier = ">=2.21.1" },
+    { name = "aiogram", specifier = ">=3.18.0" },
+    { name = "aiogram-dialog", specifier = ">=2.3.1" },
+    { name = "aiosqlite" },
+    { name = "asyncpg", specifier = ">=0.30.0" },
+    { name = "fastapi", specifier = ">=0.115.11" },
+    { name = "greenlet", specifier = ">=3.1.1" },
+    { name = "itsdangerous", specifier = ">=2.2.0" },
+    { name = "pyjwt", specifier = ">=2.10.1" },
+    { name = "pytz", specifier = ">=2025.1" },
+    { name = "sqladmin", specifier = ">=0.20.1" },
+    { name = "sqlalchemy", specifier = ">=2.0.39" },
+    { name = "types-aiobotocore-s3", specifier = ">=2.21.1" },
+    { name = "uvicorn", specifier = ">=0.34.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=7.2.2" },
+    { name = "pytest-asyncio", specifier = ">=0.23.8" },
+    { name = "pytest-cov", specifier = ">=6.0.0" },
+    { name = "pytest-env", specifier = ">=0.8.1" },
+    { name = "python-dotenv", specifier = ">=1.0.1" },
+    { name = "ruff", specifier = ">=0.11.0" },
+    { name = "tavern", specifier = ">=2.14.0" },
+]
+
+[[package]]
 name = "botocore"
 version = "1.37.1"
 source = { registry = "https://pypi.org/simple" }
@@ -782,6 +843,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-asyncio"
+version = "0.23.8"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/de/b4/0b378b7bf26a8ae161c3890c0b48a91a04106c5713ce81b4b080ea2f4f18/pytest_asyncio-0.23.8.tar.gz", hash = "sha256:759b10b33a6dc61cce40a8bd5205e302978bbbcc00e279a8b61d9a6a3c82e4d3", size = 46920 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ee/82/62e2d63639ecb0fbe8a7ee59ef0bc69a4669ec50f6d3459f74ad4e4189a2/pytest_asyncio-0.23.8-py3-none-any.whl", hash = "sha256:50265d892689a5faefb84df80819d1ecef566eb3549cf915dfb33569359d1ce2", size = 17663 },
+]
+
+[[package]]
 name = "pytest-cov"
 version = "6.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -792,6 +865,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/be/45/9b538de8cef30e17c7b45ef42f538a94889ed6a16f2387a6c89e73220651/pytest-cov-6.0.0.tar.gz", hash = "sha256:fde0b595ca248bb8e2d76f020b465f3b107c9632e6a1d1705f17834c89dcadc0", size = 66945 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/36/3b/48e79f2cd6a61dbbd4807b4ed46cb564b4fd50a76166b1c4ea5c1d9e2371/pytest_cov-6.0.0-py3-none-any.whl", hash = "sha256:eee6f1b9e61008bd34975a4d5bab25801eb31898b032dd55addc93e96fcaaa35", size = 22949 },
+]
+
+[[package]]
+name = "pytest-env"
+version = "0.8.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a3/10/2be3d3ef39212ee94407779260311a6d48e5d484aa4597308c6037878089/pytest_env-0.8.1.tar.gz", hash = "sha256:d7b2f5273ec6d1e221757998bc2f50d2474ed7d0b9331b92556011fadc4e9abf", size = 6926 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d7/0a/cbd49d36bad40b1b62729a189c42ad3b4b76ea91968a361a72acb8676b14/pytest_env-0.8.1-py3-none-any.whl", hash = "sha256:8c0605ae09a5b7e41c20ebcc44f2c906eea9654095b4b0c342b3814bcc3a8492", size = 5246 },
 ]
 
 [[package]]
@@ -866,63 +951,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/fe/0f/25911a9f080464c59fab9027482f822b86bf0608957a5fcc6eaac85aa515/PyYAML-6.0.2-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:68ccc6023a3400877818152ad9a1033e3db8625d899c72eacb5a668902e4d652", size = 751597 },
     { url = "https://files.pythonhosted.org/packages/14/0d/e2c3b43bbce3cf6bd97c840b46088a3031085179e596d4929729d8d68270/PyYAML-6.0.2-cp313-cp313-win32.whl", hash = "sha256:bc2fa7c6b47d6bc618dd7fb02ef6fdedb1090ec036abab80d4681424b84c1183", size = 140527 },
     { url = "https://files.pythonhosted.org/packages/fa/de/02b54f42487e3d3c6efb3f89428677074ca7bf43aae402517bc7cca949f3/PyYAML-6.0.2-cp313-cp313-win_amd64.whl", hash = "sha256:8388ee1976c416731879ac16da0aff3f63b286ffdd57cdeb95f3f2e085687563", size = 156446 },
-]
-
-[[package]]
-name = "readit-backend"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "aiobotocore" },
-    { name = "aiogram" },
-    { name = "aiogram-dialog" },
-    { name = "aiosqlite" },
-    { name = "asyncpg" },
-    { name = "fastapi" },
-    { name = "greenlet" },
-    { name = "itsdangerous" },
-    { name = "pyjwt" },
-    { name = "pytz" },
-    { name = "sqladmin" },
-    { name = "sqlalchemy" },
-    { name = "types-aiobotocore-s3" },
-    { name = "uvicorn" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "python-dotenv" },
-    { name = "ruff" },
-    { name = "tavern" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "aiobotocore", specifier = ">=2.21.1" },
-    { name = "aiogram", specifier = ">=3.18.0" },
-    { name = "aiogram-dialog", specifier = ">=2.3.1" },
-    { name = "aiosqlite" },
-    { name = "asyncpg", specifier = ">=0.30.0" },
-    { name = "fastapi", specifier = ">=0.115.11" },
-    { name = "greenlet", specifier = ">=3.1.1" },
-    { name = "itsdangerous", specifier = ">=2.2.0" },
-    { name = "pyjwt", specifier = ">=2.10.1" },
-    { name = "pytz", specifier = ">=2025.1" },
-    { name = "sqladmin", specifier = ">=0.20.1" },
-    { name = "sqlalchemy", specifier = ">=2.0.39" },
-    { name = "types-aiobotocore-s3", specifier = ">=2.21.1" },
-    { name = "uvicorn", specifier = ">=0.34.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pytest", specifier = ">=7.2.2" },
-    { name = "pytest-cov", specifier = ">=6.0.0" },
-    { name = "python-dotenv", specifier = ">=1.0.1" },
-    { name = "ruff", specifier = ">=0.11.0" },
-    { name = "tavern", specifier = ">=2.14.0" },
 ]
 
 [[package]]

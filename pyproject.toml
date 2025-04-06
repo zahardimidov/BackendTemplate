@@ -1,5 +1,5 @@
 [project]
-name = "readit-backend"
+name = "backend-template"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -26,12 +26,29 @@ dev = [
     "pytest>=7.2.2",
     "pytest-cov>=6.0.0",
     "python-dotenv>=1.0.1",
+    "pytest-asyncio>=0.23.8",
+    "pytest-env>=0.8.1",
     "ruff>=0.11.0",
     "tavern>=2.14.0",
 ]
 
+#[tool.pytest.ini_options]
+#addopts = "--tavern-global-cfg=tests/e2e/config.yml --log-cli-level=INFO --cov-report=html:tests/coverage --cov=./app ."
+
 [tool.pytest.ini_options]
-addopts = "--tavern-global-cfg=tests/e2e/config.yml --log-cli-level=INFO --cov-report=html:tests/coverage --cov=./app ."
+addopts = "--cov-report=html:tests/coverage --cov=./app . --ignore=tests/unit --ignore=tests/e2e -rfs -p no:warnings --tb=short --show-capture=no"
+
+cov-report="html:tests/coverage"
+log_cli="true"
+log_level="INFO"
+
+tavern-global-cfg="tests/e2e/config.yml"
+env = [
+    "TEST_MODE=1",
+    "POSTGRES_DB=test-db",
+    "POSTGRES_USER=test-user",
+    "POSTGRES_PASSWORD=test-pwd"
+]
 
 [tool.ruff]
 line-length = 100

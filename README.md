@@ -14,12 +14,12 @@ docker compose -f docker/docker-compose.local.yml --env-file=docker/local.env up
 
 #### Запуск юнит-тестов локально на компьютере
 ```
-uv run -m unittest discover tests/unit
+uv run pytest tests/unit
 ```
 
 #### Запуск e2e-тестов локально на компьютере
 ```
-uv run pytest -m e2e
+uv run pytest tests/e2e
 ```
 
 ### Управление зависимостями

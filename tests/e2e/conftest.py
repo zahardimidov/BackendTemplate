@@ -1,40 +1,46 @@
 import logging
+import os
 import subprocess
-import sys
 import time
-import warnings
 from collections.abc import MutableMapping
 from pathlib import Path
 from typing import Any
 
 import pytest
-from dotenv import load_dotenv
 from requests.models import Response
-
-warnings.filterwarnings("ignore")
-
-
-BASE_DIR = Path(__file__).parent.parent.parent.resolve()
-DOCKER_DIR = BASE_DIR.joinpath('docker').resolve()
-
-sys.path.insert(0, BASE_DIR.__str__())
-sys.path.insert(0, BASE_DIR.joinpath('app').__str__())
-
-docker_compose_file = DOCKER_DIR.joinpath('docker-compose.testing.yml')
-env_file = DOCKER_DIR.joinpath('tests.env')
-docker_cmd = f'docker compose -f {docker_compose_file} --env-file={env_file}'
-
-load_dotenv(env_file, override=True)
 
 from app.main import app
 
-logging.info(app.title)
+logging.info(f"E2E testing for application: {app.title}")
+
+BASE_DIR = Path(__file__).parent.parent.parent.resolve()
+DOCKER_DIR = BASE_DIR.joinpath("docker").resolve()
+
+def get_env():
+    env = os.environ.copy()
+    for file in DOCKER_DIR.glob("*.yml"):
+        path = file.resolve().__str__()
+        command = "grep -o '${[A-Z_]*}' " + path + " | sort -u"
+        result = subprocess.run(command, shell=True, text=True, capture_output=True)
+        for i in result.stdout.strip().split():
+            key = i.replace("${", "").replace("}", "")
+            value = os.environ.get(key)
+            if value:
+                env[key] = value
+    return env
+
+env_variables = get_env()
+
+docker_compose_file = DOCKER_DIR.joinpath("docker-compose.testing.yml")
+docker_cmd = f"docker compose -f {docker_compose_file}"
 
 
 def docker_comnpose_down():
-    cmd = docker_cmd + ' down'
+    logging.info(f"Command is: {docker_cmd}")
 
-    result = subprocess.run(cmd.split(), capture_output=True, text=True)
+    cmd = docker_cmd + " down"
+
+    result = subprocess.run(cmd.split(), capture_output=True, text=True, env=env_variables)
 
     if result.returncode != 0:
         logging.error(f"Docker Compose failed to stop: {result.stderr}")
@@ -47,14 +53,14 @@ def setup_session():
     try:
         docker_comnpose_down()
 
-        cmd = docker_cmd + ' up --build -d'
-        result = subprocess.run(cmd.split(), capture_output=True, text=True)
+        cmd = docker_cmd + " up --build -d"
+        result = subprocess.run(cmd.split(), capture_output=True, text=True, env=env_variables)
 
         if result.returncode != 0:
             logging.critical(f"Failed to start Docker Compose: {result.stderr}")
             pytest.exit("Docker Compose failed to start")
         else:
-            logging.info('Docker Compose started')
+            logging.info("Docker Compose started")
         time.sleep(10)
         yield
     finally:
