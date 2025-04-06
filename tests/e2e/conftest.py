@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+import requests
 from requests.models import Response
 
 from app.main import app
@@ -15,6 +16,7 @@ logging.info(f"E2E testing for application: {app.title}")
 
 BASE_DIR = Path(__file__).parent.parent.parent.resolve()
 DOCKER_DIR = BASE_DIR.joinpath("docker").resolve()
+
 
 def get_env():
     env = os.environ.copy()
@@ -29,10 +31,22 @@ def get_env():
                 env[key] = value
     return env
 
+
 env_variables = get_env()
 
 docker_compose_file = DOCKER_DIR.joinpath("docker-compose.testing.yml")
 docker_cmd = f"docker compose -f {docker_compose_file}"
+
+
+def wait_for_ping(timeout: int = 30):
+    for _ in range(timeout):
+        try:
+            response = requests.get('http://localhost:8080/api/ping')
+
+            if response.status_code == 200:
+                break
+        except Exception:
+            time.sleep(1)
 
 
 def docker_comnpose_down():
@@ -61,7 +75,7 @@ def setup_session():
             pytest.exit("Docker Compose failed to start")
         else:
             logging.info("Docker Compose started")
-        time.sleep(10)
+        wait_for_ping()
         yield
     finally:
         wait = 10
