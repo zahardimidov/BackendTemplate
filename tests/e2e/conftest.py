@@ -47,6 +47,8 @@ def wait_for_ping(timeout: int = 30):
                 break
         except Exception:
             time.sleep(1)
+    else:
+        raise Exception('Application was not started')
 
 
 def docker_comnpose_down():
