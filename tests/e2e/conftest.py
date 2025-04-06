@@ -3,7 +3,6 @@ import os
 import subprocess
 import time
 from collections.abc import MutableMapping
-from math import ceil
 from pathlib import Path
 from typing import Any
 
@@ -40,17 +39,17 @@ docker_cmd = f"docker compose -f {docker_compose_file}"
 
 
 def wait_for_ping(timeout: int = 30):
-    for _ in range(ceil(timeout / 3)):
+    for _ in range(timeout):
         try:
-            response = requests.get("http://0.0.0.0:8080/api/ping")
+            response = requests.get('http://0.0.0.0:8080/api/ping')
 
             if response.status_code == 200:
                 break
         except Exception as e:
             logging.error(e)
-            time.sleep(3)
+            time.sleep(1)
     else:
-        raise Exception("Application was not started")
+        raise Exception('Application was not started')
 
 
 def docker_comnpose_down():
@@ -79,7 +78,7 @@ def setup_session():
             pytest.exit("Docker Compose failed to start")
         else:
             logging.info("Docker Compose is starting")
-        wait_for_ping(timeout=100)
+        wait_for_ping(timeout=60)
         logging.info("Docker Compose started")
         yield
     finally:
