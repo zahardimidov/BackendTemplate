@@ -24,6 +24,8 @@ jobs:
 
       - name: Install requirements
         run: pip install -r requirements/dev.txt
+      - name: Check docker compose
+        run: docker compose
       - name: Ruff linter check
         run: ruff check
       - name: Run E2E and UNIT tests

@@ -41,7 +41,7 @@ docker_cmd = f"docker compose -f {docker_compose_file}"
 def wait_for_ping(timeout: int = 30):
     for _ in range(timeout):
         try:
-            response = requests.get('http://0.0.0.0:8080/api/ping')
+            response = requests.get('http://localhost:8080/api/ping')
 
             if response.status_code == 200:
                 break
