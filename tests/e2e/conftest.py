@@ -76,8 +76,9 @@ def setup_session():
             logging.critical(f"Failed to start Docker Compose: {result.stderr}")
             pytest.exit("Docker Compose failed to start")
         else:
-            logging.info("Docker Compose started")
-        wait_for_ping()
+            logging.info("Docker Compose is starting")
+        wait_for_ping(timeout=60)
+        logging.info("Docker Compose started")
         yield
     finally:
         wait = 10
