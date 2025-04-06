@@ -45,7 +45,8 @@ def wait_for_ping(timeout: int = 30):
 
             if response.status_code == 200:
                 break
-        except Exception:
+        except Exception as e:
+            logging.error(e)
             time.sleep(1)
     else:
         raise Exception('Application was not started')
@@ -77,7 +78,7 @@ def setup_session():
             pytest.exit("Docker Compose failed to start")
         else:
             logging.info("Docker Compose is starting")
-        wait_for_ping(timeout=60)
+        wait_for_ping(timeout=100)
         logging.info("Docker Compose started")
         yield
     finally:
