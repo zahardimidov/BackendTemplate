@@ -27,7 +27,7 @@ def wait_for_container(host, port, retries=5, delay=2):
         try:
             with socket.create_connection((host, port), timeout=5):
                 logging.info(f"Container at {host}:{port} is ready.")
-                time.sleep(delay)
+                time.sleep(5)
                 break
         except Exception as e:
             logging.error(e)
