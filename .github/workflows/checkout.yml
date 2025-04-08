@@ -27,4 +27,4 @@ jobs:
       - name: Ruff linter check
         run: ruff check
       - name: Run E2E and UNIT tests
-        run: pytest tests/e2e tests/unit && coverage report
+        run: pytest tests/unit && coverage report

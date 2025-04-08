@@ -17,23 +17,7 @@ logging.info(f"E2E testing for application: {app.title}")
 BASE_DIR = Path(__file__).parent.parent.parent.resolve()
 DOCKER_DIR = BASE_DIR.joinpath("docker").resolve()
 
-
-def get_env():
-    env = os.environ.copy()
-    for file in DOCKER_DIR.glob("*.yml"):
-        path = file.resolve().__str__()
-        command = "grep -o '${[A-Z_]*}' " + path + " | sort -u"
-        result = subprocess.run(command, shell=True, text=True, capture_output=True)
-        for i in result.stdout.strip().split():
-            key = i.replace("${", "").replace("}", "")
-            value = os.environ.get(key)
-            if value:
-                env[key] = value
-    return env
-
-
-env_variables = get_env()
-
+env_variables = os.environ.copy()
 docker_compose_file = DOCKER_DIR.joinpath("docker-compose.testing.yml")
 docker_cmd = f"docker compose -f {docker_compose_file}"
 
