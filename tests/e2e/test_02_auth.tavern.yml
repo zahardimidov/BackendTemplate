@@ -3,7 +3,7 @@ test_name: Тестирование авторизации пользовате�
 stages:
   - name: "Получение JWT токена"
     request:
-      url: "{BASE_URL}/user/auth"
+      url: "{BASE_URL}/users/auth"
       method: POST
       json:
         init_data: "749234118"

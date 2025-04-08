@@ -24,7 +24,6 @@ admin = Admin(base_url="/api/admin")
 admin.init(app, engine)
 
 app.add_api_route('/', endpoint=redirect_to_docs, methods=['get'], include_in_schema=False)
-app.include_router(router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

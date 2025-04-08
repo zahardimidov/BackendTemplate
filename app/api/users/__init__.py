@@ -5,7 +5,7 @@ from app.schemas import UserMe
 
 from .auth import router as auth_router
 
-router = APIRouter(prefix='/user', tags=['Пользователи'])
+router = APIRouter(prefix='/users', tags=['Пользователи'])
 
 
 @router.get("/me", response_model=UserMe, summary="Получение профиля пользователем")

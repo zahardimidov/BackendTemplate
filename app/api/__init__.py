@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response
 from fastapi.routing import APIRoute
-from app.api.user import router as user_router
+from app.api.users import router as users_router
 
 
 router = APIRouter(prefix='/api')
@@ -9,7 +9,7 @@ router = APIRouter(prefix='/api')
 async def ping():
     return Response(status_code=200)
 
-router.include_router(user_router)
+router.include_router(users_router)
 
 
 for route in router.routes:

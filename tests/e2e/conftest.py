@@ -1,5 +1,6 @@
 import logging
 import os
+import socket
 import subprocess
 import time
 from collections.abc import MutableMapping
@@ -7,7 +8,6 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-import requests
 from requests.models import Response
 
 from app.main import app
@@ -38,18 +38,19 @@ docker_compose_file = DOCKER_DIR.joinpath("docker-compose.testing.yml")
 docker_cmd = f"docker compose -f {docker_compose_file}"
 
 
-def wait_for_ping(timeout: int = 30):
-    for _ in range(timeout):
+def wait_for_container(host, port, retries=5, delay=2):
+    for attempt in range(retries):
         try:
-            response = requests.get('http://localhost:8080/api/ping')
-
-            if response.status_code == 200:
+            with socket.create_connection((host, port), timeout=5):
+                logging.info(f"Container at {host}:{port} is ready.")
+                time.sleep(delay)
                 break
         except Exception as e:
             logging.error(e)
-            time.sleep(1)
+            logging.info(f"Attempt {attempt + 1}/{retries}: Waiting for container...")
+            time.sleep(delay)
     else:
-        raise Exception('Application was not started')
+        raise Exception("Application was not started")
 
 
 def docker_comnpose_down():
@@ -78,7 +79,7 @@ def setup_session():
             pytest.exit("Docker Compose failed to start")
         else:
             logging.info("Docker Compose is starting")
-        wait_for_ping(timeout=60)
+        wait_for_container("localhost", 8080)
         logging.info("Docker Compose started")
         yield
     finally:
